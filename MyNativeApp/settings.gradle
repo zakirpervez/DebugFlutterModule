@@ -1,0 +1,33 @@
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "MyNativeApp"
+include ':app'
+
+def myFlutterModulePath = file("../my_flutter_module")
+println("Flutter Module Path: $myFlutterModulePath")
+def myFlutterIncludeFlutter = file("$myFlutterModulePath/.android/include_flutter.groovy")
+println("Groovy file path: $myFlutterIncludeFlutter")
+
+setBinding(new Binding([gradle: this]))
+evaluate(myFlutterIncludeFlutter)
+include ':my_flutter_module'
+project(':my_flutter_module').projectDir = new File('../my_flutter_module')
